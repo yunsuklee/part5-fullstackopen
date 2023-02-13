@@ -1,0 +1,9 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Google",
+  "author": "sergio",
+  "url": "https://www.google.com/",
+  "userId": "63e4dfd25e8af63c5a612975"
+}

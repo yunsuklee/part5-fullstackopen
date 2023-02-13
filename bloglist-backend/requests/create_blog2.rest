@@ -1,0 +1,9 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Youtube",
+  "author": "root",
+  "url": "https://www.youtube.com/",
+  "userId": "63e23731d6512cec43a93dd8"
+}

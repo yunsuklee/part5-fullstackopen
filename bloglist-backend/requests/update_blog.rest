@@ -1,0 +1,8 @@
+PUT http://localhost:3001/api/blogs/63c526c08b18267d76502282
+Content-Type: application/json
+
+{
+  "title": "Blog test updated",
+  "author": "Sergio Yunsuk Lee",
+  "likes": 90
+}
