@@ -57,7 +57,7 @@ const App = () => {
         setPassword={setPassword}
         handleLogin={handleLogin}
       />}
-      {user && <BlogList blogs={blogs} user={user} />}
+      {user && <BlogList blogs={blogs} user={user} setUser={setUser} />}
     </div>
   )
 }
