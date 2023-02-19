@@ -9,10 +9,13 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
+      setBlogs(blogs)
     )  
   }, [])
 
@@ -42,8 +45,30 @@ const App = () => {
       setUsername('')
       setPassword('')
 
-    } catch (exception) {
+    } catch(exception) {
       alert('Wrong Credentials')
+    }
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    const blogObject = {
+      title: title,
+      author: author,
+      url: url
+    }
+
+    try {
+      await blogService.create(blogObject)
+      const blogs = await blogService.getAll()
+
+      setBlogs(blogs)
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+
+    } catch(exception) {
+      alert('Something went wrong, please try again later')
     }
   }
 
@@ -57,7 +82,22 @@ const App = () => {
         setPassword={setPassword}
         handleLogin={handleLogin}
       />}
-      {user && <BlogList blogs={blogs} user={user} setUser={setUser} />}
+      {user && 
+        <div>
+          <BlogList
+            blogs={blogs}
+            user={user}
+            setUser={setUser}
+            title={title}
+            author={author}
+            url={url}
+            setTitle={setTitle}
+            setAuthor={setAuthor}
+            setUrl={setUrl}
+            handleSubmit={handleSubmit}
+          />
+        </div>
+      }
     </div>
   )
 }

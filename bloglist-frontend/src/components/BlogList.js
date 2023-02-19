@@ -1,18 +1,28 @@
 import Blog from './Blog'
+import BlogForm from './BlogForm'
 
-const BlogList = ({ blogs, user, setUser }) => (
+const BlogList = (props) => (
   <div>
     <h2>blogs</h2>
     <p>
-      {user.name} logged in
+      {props.user.name} logged in
       <button onClick={() => {
         window.localStorage.removeItem('loggedBlogAppUser')
-        setUser(null)
+        props.setUser(null)
       }}>
         logout
       </button>
     </p>
-    {blogs.map(blog =>
+    <BlogForm 
+      title={props.title}
+      author={props.author}
+      url={props.url}
+      setTitle={props.setTitle}
+      setAuthor={props.setAuthor}
+      setUrl={props.setUrl}
+      handleSubmit={props.handleSubmit}
+    />
+    {props.blogs.map(blog =>
       <Blog key={blog.id} blog={blog} />
     )}
   </div>
