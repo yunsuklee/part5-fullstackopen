@@ -1,3 +1,4 @@
+import React from 'react'
 import Blog from './Blog'
 import BlogForm from './BlogForm'
 
@@ -13,7 +14,7 @@ const BlogList = (props) => (
         logout
       </button>
     </p>
-    <BlogForm 
+    <BlogForm
       title={props.title}
       author={props.author}
       url={props.url}

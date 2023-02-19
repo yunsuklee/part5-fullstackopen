@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Login from './components/Login'
 import BlogList from './components/BlogList'
 import blogService from './services/blogs'
@@ -16,7 +16,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -74,15 +74,15 @@ const App = () => {
 
   return (
     <div>
-      {!user && 
-      <Login 
+      {!user &&
+      <Login
         username={username}
         password={password}
         setUsername={setUsername}
         setPassword={setPassword}
         handleLogin={handleLogin}
       />}
-      {user && 
+      {user &&
         <div>
           <BlogList
             blogs={blogs}
