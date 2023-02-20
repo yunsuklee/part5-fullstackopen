@@ -1,10 +1,15 @@
 import React from 'react'
 import Blog from './Blog'
 import BlogForm from './BlogForm'
+import Notification from './Notification'
 
 const BlogList = (props) => (
   <div>
     <h2>blogs</h2>
+    <Notification
+      message={props.message}
+      messageType={props.messageType}
+    />
     <p>
       {props.user.name} logged in
       <button onClick={() => {

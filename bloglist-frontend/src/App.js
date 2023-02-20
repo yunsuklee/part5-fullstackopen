@@ -12,6 +12,8 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [message, setMessage] = useState('')
+  const [messageType, setMessageType] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -45,8 +47,22 @@ const App = () => {
       setUsername('')
       setPassword('')
 
+      setMessageType('success')
+      setMessage(`Welcome back ${user.username}!`)
+
+      setTimeout(() => {
+        setMessage('')
+        setMessageType('')
+      }, 5000)
+
     } catch(exception) {
-      alert('Wrong Credentials')
+      setMessageType('error')
+      setMessage('Wrong username or password')
+
+      setTimeout(() => {
+        setMessage('')
+        setMessageType('')
+      }, 5000)
     }
   }
 
@@ -63,12 +79,26 @@ const App = () => {
       const blogs = await blogService.getAll()
 
       setBlogs(blogs)
+      setMessageType('success')
+      setMessage(`A new blog ${title} by ${author}`)
+
       setTitle('')
       setAuthor('')
       setUrl('')
 
+      setTimeout(() => {
+        setMessage('')
+        setMessageType('')
+      }, 5000)
+
     } catch(exception) {
-      alert('Something went wrong, please try again later')
+      setMessageType('error')
+      setMessage('Something went wrong, please try again later')
+
+      setTimeout(() => {
+        setMessage('')
+        setMessageType('')
+      }, 5000)
     }
   }
 
@@ -81,6 +111,8 @@ const App = () => {
         setUsername={setUsername}
         setPassword={setPassword}
         handleLogin={handleLogin}
+        message={message}
+        messageType={messageType}
       />}
       {user &&
         <div>
@@ -95,6 +127,8 @@ const App = () => {
             setAuthor={setAuthor}
             setUrl={setUrl}
             handleSubmit={handleSubmit}
+            message={message}
+            messageType={messageType}
           />
         </div>
       }
