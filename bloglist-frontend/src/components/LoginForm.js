@@ -1,30 +1,38 @@
 import React from 'react'
 import Notification from './Notification'
 
-const loginForm = (props) => (
+const LoginForm = ({
+  message,
+  messageType,
+  handleLogin,
+  username,
+  password,
+  setUsername,
+  setPassword
+}) => (
   <div>
     <h2>log in to application</h2>
     <Notification
-      message={props.message}
-      messageType={props.messageType}
+      message={message}
+      messageType={messageType}
     />
-    <form onSubmit={props.handleLogin}>
+    <form onSubmit={handleLogin}>
       <div>
         <label>username</label>
         <input
           type='text'
-          value={props.username}
+          value={username}
           name='username'
-          onChange={({ target }) => props.setUsername(target.value)}
+          onChange={({ target }) => setUsername(target.value)}
         />
       </div>
       <div>
         <label>password</label>
         <input
           type='password'
-          value={props.password}
+          value={password}
           name='password'
-          onChange={({ target }) => props.setPassword(target.value)}
+          onChange={({ target }) => setPassword(target.value)}
         />
       </div>
       <button type='submit'>login</button>
@@ -32,4 +40,4 @@ const loginForm = (props) => (
   </div>
 )
 
-export default loginForm
+export default LoginForm

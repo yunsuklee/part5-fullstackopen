@@ -1,25 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import Login from './components/Login'
+import LoginForm from './components/LoginForm'
 import BlogList from './components/BlogList'
-import blogService from './services/blogs'
 import loginService from './services/login'
+import blogService from './services/blogs'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
-  const [user, setUser] = useState(null)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState('')
 
-  useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
-  }, [])
+  const [user, setUser] = useState(null)
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
@@ -66,46 +57,10 @@ const App = () => {
     }
   }
 
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-    const blogObject = {
-      title: title,
-      author: author,
-      url: url
-    }
-
-    try {
-      await blogService.create(blogObject)
-      const blogs = await blogService.getAll()
-
-      setBlogs(blogs)
-      setMessageType('success')
-      setMessage(`A new blog ${title} by ${author}`)
-
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-
-      setTimeout(() => {
-        setMessage('')
-        setMessageType('')
-      }, 5000)
-
-    } catch(exception) {
-      setMessageType('error')
-      setMessage('Something went wrong, please try again later')
-
-      setTimeout(() => {
-        setMessage('')
-        setMessageType('')
-      }, 5000)
-    }
-  }
-
   return (
     <div>
       {!user &&
-      <Login
+      <LoginForm
         username={username}
         password={password}
         setUsername={setUsername}
@@ -115,22 +70,14 @@ const App = () => {
         messageType={messageType}
       />}
       {user &&
-        <div>
-          <BlogList
-            blogs={blogs}
-            user={user}
-            setUser={setUser}
-            title={title}
-            author={author}
-            url={url}
-            setTitle={setTitle}
-            setAuthor={setAuthor}
-            setUrl={setUrl}
-            handleSubmit={handleSubmit}
-            message={message}
-            messageType={messageType}
-          />
-        </div>
+        <BlogList
+          user={user}
+          setUser={setUser}
+          message={message}
+          setMessage={setMessage}
+          messageType={messageType}
+          setMessageType={setMessageType}
+        />
       }
     </div>
   )
