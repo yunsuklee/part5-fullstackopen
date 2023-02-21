@@ -1,0 +1,10 @@
+PUT http://localhost:3003/api/blogs/63e4def21cd228cb20eeacdc
+Content-Type: application/json
+
+{
+  "title": "LinkedIn",
+  "author": "root",
+  "url": "https://www.linkedin.com/",
+  "userId": "63e23731d6512cec43a93dd8",
+  "likes": 2
+}

@@ -16,10 +16,27 @@ const create = async newBlog => {
   return response.data
 }
 
-const getAll = () => {
-  const request = axios.get(baseUrl)
-  return request.then(response => response.data)
+const getAll = async () => {
+  const request = await axios.get(baseUrl)
+  return request.data
 }
 
-const blogService = { getAll, setToken, create }
+const getOne = async (id) => {
+  const request = await axios.get(`${baseUrl}/${id}`)
+  return request.data
+}
+
+const increaseLikes = async (updatedBlog, id) => {
+  const response = await axios.put(`${baseUrl}/${id}`, updatedBlog)
+  return response.data
+}
+
+const blogService = {
+  getAll,
+  getOne,
+  setToken,
+  create,
+  increaseLikes
+}
+
 export default blogService

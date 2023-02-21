@@ -1,20 +1,51 @@
 import React, { useState } from 'react'
+import blogService from '../services/blogs'
 
-const Blog = ({ blog }) => {
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  }
+const blogStyle = {
+  paddingTop: 10,
+  paddingLeft: 2,
+  border: 'solid',
+  borderWidth: 1,
+  marginBottom: 5
+}
 
+const Blog = ({
+  blog,
+  setMessage,
+  setMessageType
+}) => {
+  const [likes, setLikes] = useState(blog.likes)
   const [visible, setVisible] = useState(false)
-
   const showWhenVisible = { display: visible ? '' : 'none' }
 
   const toggleVisibility = () => {
     setVisible(!visible)
+  }
+
+  const increaseLikes = async () => {
+    const updatedBlog = {
+      title: blog.title,
+      author: blog.author,
+      url: blog.url,
+      userId: blog.user.id,
+      likes: likes + 1,
+    }
+
+    try {
+      const response = await blogService
+        .increaseLikes(updatedBlog, blog.id)
+
+      setLikes(response.likes)
+
+    } catch(exception) {
+      setMessageType('error')
+      setMessage('Something went wrong, please try again later')
+
+      setTimeout(() => {
+        setMessage('')
+        setMessageType('')
+      }, 5000)
+    }
   }
 
   return (
@@ -26,8 +57,8 @@ const Blog = ({ blog }) => {
       <div style={showWhenVisible}>
         <p>{blog.url}</p>
         <p>
-          {blog.likes}
-          <button>like</button>
+          {likes}
+          <button onClick={increaseLikes}>like</button>
         </p>
         <p>{blog.user.name}</p>
       </div>

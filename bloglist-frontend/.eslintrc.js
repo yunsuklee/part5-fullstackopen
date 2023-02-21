@@ -38,7 +38,7 @@ module.exports = {
     'eqeqeq': 'error',
     'no-trailing-spaces': 'error',
     'object-curly-spacing': [
-      'error', { 'before': true, 'after': true }
+      'error', 'always'
     ],
     'arrow-spacing': [
       'error', { 'before': true, 'after': true }
