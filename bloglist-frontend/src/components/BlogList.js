@@ -7,9 +7,6 @@ import blogService from '../services/blogs'
 
 const BlogList = (props) => {
   const [blogs, setBlogs] = useState([])
-  // const [message, setMessage] = useState('')
-  // const [messageType, setMessageType] = useState('')
-
   const [url, setUrl] = useState('')
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
