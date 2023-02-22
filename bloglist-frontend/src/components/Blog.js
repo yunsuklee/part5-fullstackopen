@@ -12,7 +12,9 @@ const blogStyle = {
 const Blog = ({
   blog,
   setMessage,
-  setMessageType
+  setMessageType,
+  user,
+  setBlogs
 }) => {
   const [likes, setLikes] = useState(blog.likes)
   const [visible, setVisible] = useState(false)
@@ -36,6 +38,8 @@ const Blog = ({
         .increaseLikes(updatedBlog, blog.id)
 
       setLikes(response.likes)
+      const blogs = await blogService.getAll()
+      setBlogs(blogs)
 
     } catch(exception) {
       setMessageType('error')
@@ -45,6 +49,32 @@ const Blog = ({
         setMessage('')
         setMessageType('')
       }, 5000)
+    }
+  }
+
+  const removeBlog = async () => {
+    if(window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
+      try {
+        await blogService.remove(blog.id)
+        const blogs = await blogService.getAll()
+        setBlogs(blogs)
+      } catch(exception) {
+        setMessageType('error')
+        setMessage('Something went wrong, please try again later')
+
+        setTimeout(() => {
+          setMessage('')
+          setMessageType('')
+        }, 5000)
+      }
+    }
+  }
+
+  const showDeleteButton = (username) => {
+    if (user.username === username) {
+      return (
+        <button onClick={removeBlog}>remove</button>
+      )
     }
   }
 
@@ -61,6 +91,7 @@ const Blog = ({
           <button onClick={increaseLikes}>like</button>
         </p>
         <p>{blog.user.name}</p>
+        {showDeleteButton(blog.user.username)}
       </div>
     </div>
   )

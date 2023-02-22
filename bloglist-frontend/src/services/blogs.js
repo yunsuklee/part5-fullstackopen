@@ -16,12 +16,20 @@ const create = async newBlog => {
   return response.data
 }
 
+const remove = async id => {
+  const config = {
+    headers: { Authorization: token }
+  }
+
+  await axios.delete(`${baseUrl}/${id}`, config)
+}
+
 const getAll = async () => {
   const request = await axios.get(baseUrl)
   return request.data
 }
 
-const getOne = async (id) => {
+const getOne = async id => {
   const request = await axios.get(`${baseUrl}/${id}`)
   return request.data
 }
@@ -36,7 +44,8 @@ const blogService = {
   getOne,
   setToken,
   create,
-  increaseLikes
+  increaseLikes,
+  remove
 }
 
 export default blogService
