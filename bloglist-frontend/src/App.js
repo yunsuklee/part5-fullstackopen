@@ -60,15 +60,16 @@ const App = () => {
   return (
     <div>
       {!user &&
-      <LoginForm
-        username={username}
-        password={password}
-        setUsername={setUsername}
-        setPassword={setPassword}
-        handleLogin={handleLogin}
-        message={message}
-        messageType={messageType}
-      />}
+        <LoginForm
+          username={username}
+          password={password}
+          setUsername={setUsername}
+          setPassword={setPassword}
+          handleLogin={handleLogin}
+          message={message}
+          messageType={messageType}
+        />
+      }
       {user &&
         <BlogList
           user={user}

@@ -13,9 +13,10 @@ const BlogList = (props) => {
 
   const blogFormRef = useRef()
 
-  useEffect(async () => {
-    const initialBlogs = await blogService.getAll()
-    setBlogs(initialBlogs)
+  useEffect(() => {
+    blogService.getAll().then(blogs =>
+      setBlogs(blogs)
+    )
   }, [])
 
   const addBlog = async (event) => {
