@@ -28,6 +28,7 @@ describe('<Blog />', () => {
   const mockSetMessage = jest.fn()
   const mockSetMessageType = jest.fn()
   const mockSetBlogs = jest.fn()
+  const mockIncreaseLikes = jest.fn()
 
   beforeEach(() => {
     container = render(
@@ -38,6 +39,7 @@ describe('<Blog />', () => {
         setMessageType={mockSetMessageType}
         user={user}
         setBlogs={mockSetBlogs}
+        increaseLikes={mockIncreaseLikes}
       />
     ).container
   })
@@ -59,5 +61,17 @@ describe('<Blog />', () => {
 
     const div = container.querySelector('.blog_info')
     expect(div).not.toHaveStyle('display: none')
+  })
+
+  test('clicking twice the like button calls event handler twice', async () => {
+    const user = userEvent.setup()
+    const button = screen.getByText('view')
+    await user.click(button)
+
+    const likeButton = screen.getByText('like')
+    await user.click(likeButton)
+    await user.click(likeButton)
+
+    expect(mockIncreaseLikes.mock.calls).toHaveLength(2)
   })
 })

@@ -7,10 +7,6 @@ import blogService from '../services/blogs'
 
 const BlogList = (props) => {
   const [blogs, setBlogs] = useState([])
-  const [url, setUrl] = useState('')
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-
   const blogFormRef = useRef()
 
   useEffect(() => {
@@ -19,26 +15,15 @@ const BlogList = (props) => {
     )
   }, [])
 
-  const addBlog = async (event) => {
-    event.preventDefault()
-    const blogObject = {
-      title: title,
-      author: author,
-      url: url
-    }
-
+  const createBlog = async (blogObject) => {
     try {
       await blogService.create(blogObject)
       const blogs = await blogService.getAll()
 
       setBlogs(blogs)
       props.setMessageType('success')
-      props.setMessage(`A new blog ${title} by ${author}`)
+      props.setMessage(`A new blog ${blogObject.title} by ${blogObject.author}`)
       blogFormRef.current.toggleVisibility()
-
-      setTitle('')
-      setAuthor('')
-      setUrl('')
 
       setTimeout(() => {
         props.setMessage('')
@@ -76,13 +61,7 @@ const BlogList = (props) => {
       </p>
       <Togglable buttonLabel='new blog' ref={blogFormRef}>
         <BlogForm
-          title={title}
-          author={author}
-          url={url}
-          setTitle={setTitle}
-          setAuthor={setAuthor}
-          setUrl={setUrl}
-          addBlog={addBlog}
+          createBlog={createBlog}
         />
       </Togglable>
       {blogs

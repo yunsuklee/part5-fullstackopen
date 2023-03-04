@@ -14,7 +14,8 @@ const Blog = ({
   setMessage,
   setMessageType,
   user,
-  setBlogs
+  setBlogs,
+  increaseLikes
 }) => {
   const [likes, setLikes] = useState(blog.likes)
   const [visible, setVisible] = useState(false)
@@ -24,7 +25,7 @@ const Blog = ({
     setVisible(!visible)
   }
 
-  const increaseLikes = async () => {
+  const increaseLikesLocal = async () => {
     const updatedBlog = {
       title: blog.title,
       author: blog.author,
@@ -86,10 +87,10 @@ const Blog = ({
       </button>
       <div style={showWhenVisible} className='blog_info'>
         <p>{blog.url}</p>
-        <p>
-          {likes}
-          <button onClick={increaseLikes}>like</button>
-        </p>
+        <div>
+          <span>{likes}</span>
+          <button onClick={increaseLikes ? increaseLikes : increaseLikesLocal}>like</button>
+        </div>
         <p>{blog.user.name}</p>
         {showDeleteButton(blog.user.username)}
       </div>
