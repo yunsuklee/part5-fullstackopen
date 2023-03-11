@@ -67,6 +67,32 @@ describe('Blog app', function() {
         cy.contains('like').click()
         cy.contains('1')
       })
+
+      it('The user who created the blog can delete it', function() {
+        cy.contains('view').click()
+        cy.contains('remove').click()
+        
+        cy.get('html').should('not.contain', 'Another Cypress made blog')
+      })
+
+      it('Other users but the creator cannot see the delete button', function() {
+        cy.contains('logout').click()
+        
+        const user = {
+          name: 'Tester2',
+          username: 'tester2',
+          password: 'test2'
+        }
+        cy.request('POST', 'http://localhost:3003/api/users', user)
+        
+        cy.get('#username').type('tester2')
+        cy.get('#password').type('test2')
+        cy.get('#submit').click()
+
+        cy.contains('view').click()
+        cy.contains('Another Cypress made blog')
+          .should('not.contain', 'remove')
+      })
     })
   })
 
