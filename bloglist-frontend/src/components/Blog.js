@@ -89,7 +89,11 @@ const Blog = ({
         <p>{blog.url}</p>
         <div>
           <span>{likes}</span>
-          <button onClick={increaseLikes ? increaseLikes : increaseLikesLocal}>like</button>
+          <button
+            onClick={increaseLikes ? increaseLikes : increaseLikesLocal}
+          >
+            like
+          </button>
         </div>
         <p>{blog.user.name}</p>
         {showDeleteButton(blog.user.username)}

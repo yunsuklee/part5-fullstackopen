@@ -52,6 +52,22 @@ describe('Blog app', function() {
 
       cy.contains('A Cypress made blog')
     })
+
+    describe('And a blog exists', function() {
+      beforeEach(function() {
+        cy.contains('new blog').click()
+        cy.get('#title').type('Another Cypress made blog')
+        cy.get('#author').type('Tester')
+        cy.get('#url').type('http://test.com')
+        cy.get('#create').click()
+      })
+
+      it('Users can like a blog', function() {
+        cy.contains('view').click()
+        cy.contains('like').click()
+        cy.contains('1')
+      })
+    })
   })
 
 })
