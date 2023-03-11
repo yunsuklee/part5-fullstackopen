@@ -1,15 +1,15 @@
 describe('Blog app', function() {
   beforeEach(function() {
-    cy.request('POST', 'http://localhost:3003/api/testing/reset')
+    cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`)
     
     const user = {
       name: 'Tester',
       username: 'tester',
       password: 'test'
     }
-    cy.request('POST', 'http://localhost:3003/api/users', user)
+    cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
 
-    cy.visit('http://localhost:3000')
+    cy.visit('')
   })
 
   it('Login form is shown', function() {
@@ -38,13 +38,11 @@ describe('Blog app', function() {
 
   describe('When logged in', function() {
     beforeEach(function() {
-      cy.get('#username').type('tester')
-      cy.get('#password').type('test')
-      cy.get('#submit').click()  
+      cy.login({ username: 'tester', password: 'test' })
     })
 
     it('A blog can be created', function() {
-      cy.contains('new blog').click()
+      cy.get('#new-blog').click()
       cy.get('#title').type('A Cypress made blog')
       cy.get('#author').type('Tester')
       cy.get('#url').type('http://test.com')
@@ -55,11 +53,11 @@ describe('Blog app', function() {
 
     describe('And a blog exists', function() {
       beforeEach(function() {
-        cy.contains('new blog').click()
-        cy.get('#title').type('Another Cypress made blog')
-        cy.get('#author').type('Tester')
-        cy.get('#url').type('http://test.com')
-        cy.get('#create').click()
+        cy.createBlog({
+          title: 'Another Cypress made blog',
+          author: 'Tester',
+          url: 'http://test.com'
+        })
       })
 
       it('Users can like a blog', function() {
@@ -72,7 +70,7 @@ describe('Blog app', function() {
         cy.contains('view').click()
         cy.contains('remove').click()
         
-        cy.get('html').should('not.contain', 'Another Cypress made blog')
+        cy.get('html').should('not.contain', '.blog')
       })
 
       it('Other users but the creator cannot see the delete button', function() {
@@ -83,15 +81,40 @@ describe('Blog app', function() {
           username: 'tester2',
           password: 'test2'
         }
-        cy.request('POST', 'http://localhost:3003/api/users', user)
+        cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
         
-        cy.get('#username').type('tester2')
-        cy.get('#password').type('test2')
-        cy.get('#submit').click()
+        cy.login({ username: 'tester2', password: 'test2' })
 
         cy.contains('view').click()
         cy.contains('Another Cypress made blog')
           .should('not.contain', 'remove')
+      })
+    })
+
+    describe('And multiple blogs exist', function() {
+      beforeEach(function() {
+        cy.createBlog({
+          title: 'First Cypress made blog',
+          author: 'Tester',
+          url: 'http://test.com'
+        })
+
+        cy.wait(2000)
+
+        cy.contains('view').click()
+        cy.contains('like').click()
+        cy.contains('1')
+
+        cy.createBlog({
+          title: 'Second Cypress made blog',
+          author: 'Tester',
+          url: 'http://test.com'
+        })
+      })
+
+      it('They will be ordered according to likes', function() {
+        cy.get('.blog').eq(0).should('contain', 'First Cypress made blog')
+        cy.get('.blog').eq(1).should('contain', 'Second Cypress made blog')
       })
     })
   })
